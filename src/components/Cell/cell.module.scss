@@ -1,0 +1,22 @@
+@import '../../styles/index';
+
+.button {
+  border: 1px solid $white;
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  color: $white;
+  transition: .1s all linear;
+
+  &:hover:enabled {
+    background-color: $accent;
+    border-color: $accent;
+  }
+
+  &:disabled {
+    border-color: $accent;
+  }
+}

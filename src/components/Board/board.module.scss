@@ -1,0 +1,36 @@
+@import '../../styles/index';
+
+.container {
+  background-color: $secondary;
+  border-radius: 13px;
+  max-width: 322px;
+  margin: 0 auto;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+
+.title {
+  font-family: 'Itim', cursive;
+  text-align: center;
+  font-size: 22px;
+}
+
+.button {
+  font-size: 14px;
+  padding: 5px 15px;
+  margin: 0 auto 25px;
+  display: block;
+  border-radius: 13px;
+  background-color: $white;
+  border: none;
+  color: $primary;
+  font-weight: 700;
+  transition: background-color .1s linear;
+
+  &:hover {
+    background-color: rgba($white, 50%);
+  }
+}

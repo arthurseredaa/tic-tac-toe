@@ -7,24 +7,30 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint '**/*.{ts,tsx}'",
-    "lint:fix": "eslint '**/*.{ts,tsx}' --fix",
+    "eslint": "eslint '**/*.{ts,tsx}'",
+    "eslint:fix": "eslint '**/*.{ts,tsx}' --fix",
     "stylelint": "stylelint \"**/*.scss\"",
-    "stylelint:fix": "stylelint \"**/*.scss\" --fix"
+    "stylelint:fix": "stylelint \"**/*.scss\" --fix",
+    "lint": "npm run eslint && npm run stylelint",
+    "lint:fix": "npm run eslint:fix && npm run stylelint:fix"
   },
   "pre-commit": [
-    "lint",
+    "eslint:fix",
+    "stylelint:fix",
+    "eslint",
     "stylelint"
   ],
   "dependencies": {
     "pre-commit": "^1.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "uuid": "^9.0.0",
     "vite-tsconfig-paths": "^4.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.33.0",

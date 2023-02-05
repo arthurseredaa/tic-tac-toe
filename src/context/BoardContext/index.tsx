@@ -1,13 +1,13 @@
-import {createContext, FC, ReactNode, useCallback, useMemo, useState} from "react";
+import { createContext, type FC, type ReactNode, useCallback, useMemo, useState } from 'react'
 
-type Board = {
-  x: Array<number>
-  o: Array<number>
+interface Board {
+  x: number[]
+  o: number[]
 }
 
-type UpdateBoardData = ({ player, cellIndex }: {player: 'x' | 'o'; cellIndex: number}) => void
+type UpdateBoardData = ({ player, cellIndex }: { player: 'x' | 'o', cellIndex: number }) => void
 
-type BoardContext = {
+interface BoardContext {
   boardData: Board
   updateBoardData?: UpdateBoardData
 }
@@ -17,13 +17,13 @@ const defaultBoardData: Board = {
   o: []
 }
 
-export const BoardContext = createContext<BoardContext>({boardData: defaultBoardData})
+export const Context = createContext<BoardContext>({ boardData: defaultBoardData })
 
-export const BoardContextProvider: FC<{ children: ReactNode }> = ({children}) => {
+export const BoardContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [boardData, setBoardData] = useState<Board>(defaultBoardData)
 
-  const updateBoardData = useCallback<UpdateBoardData>(({player, cellIndex}) => {
-    setBoardData((prevState) => ({...prevState, [player]: [...prevState[player], cellIndex]}))
+  const updateBoardData = useCallback<UpdateBoardData>(({ player, cellIndex }) => {
+    setBoardData((prevState) => ({ ...prevState, [player]: [...prevState[player], cellIndex] }))
   }, [])
 
   const contextValue = useMemo(() => ({
@@ -31,5 +31,5 @@ export const BoardContextProvider: FC<{ children: ReactNode }> = ({children}) =>
     updateBoardData
   }), [boardData, updateBoardData])
 
-  return <BoardContext.Provider value={contextValue}>{children}</BoardContext.Provider>
+  return <Context.Provider value={contextValue}>{children}</Context.Provider>
 }

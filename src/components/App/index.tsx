@@ -1,12 +1,12 @@
-import {useState} from "react";
+import { type FC, useState } from 'react'
 
-import Header from "@components/Header";
-import Board from "@components/Board";
+import Header from '@components/Header'
+import Board from '@components/Board'
 
-function App() {
+const App: FC = () => {
   const [currentValue, setCurrentValue] = useState<'x' | 'o'>('o')
 
-  const toggleMove = () => {
+  const toggleMove = (): void => {
     setCurrentValue(prevState => prevState === 'o' ? 'x' : 'o')
   }
 

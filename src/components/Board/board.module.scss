@@ -1,4 +1,4 @@
-@import '../../styles/index';
+@import "../../styles/index";
 
 .container {
   background-color: $secondary;
@@ -13,7 +13,7 @@
 }
 
 .title {
-  font-family: 'Itim', cursive;
+  font-family: Itim, cursive;
   text-align: center;
   font-size: 22px;
 }
@@ -28,7 +28,7 @@
   border: none;
   color: $primary;
   font-weight: 700;
-  transition: background-color .1s linear;
+  transition: background-color 0.1s linear;
 
   &:hover {
     background-color: rgba($white, 50%);

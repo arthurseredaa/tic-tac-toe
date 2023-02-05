@@ -1,4 +1,4 @@
-@import '../../styles/index';
+@import "../../styles/index";
 
 .button {
   border: 1px solid $white;
@@ -9,14 +9,14 @@
   align-items: center;
   background-color: transparent;
   color: $white;
-  transition: .1s all linear;
+  transition: 0.1s all linear;
 
-  &:hover:enabled {
-    background-color: $accent;
+  &:disabled {
     border-color: $accent;
   }
 
-  &:disabled {
+  &:hover:enabled {
+    background-color: $accent;
     border-color: $accent;
   }
 }

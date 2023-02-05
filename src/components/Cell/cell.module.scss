@@ -1,4 +1,4 @@
-@import '../../styles/index';
+@import url('../../styles/index.scss');
 
 .button {
   border: 1px solid $white;
@@ -11,12 +11,12 @@
   color: $white;
   transition: .1s all linear;
 
-  &:hover:enabled {
-    background-color: $accent;
+  &:disabled {
     border-color: $accent;
   }
 
-  &:disabled {
+  &:hover:enabled {
+    background-color: $accent;
     border-color: $accent;
   }
 }

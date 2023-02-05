@@ -84,15 +84,17 @@ const Board: FC<Props> = ({
   return (
     <>
       {
-        isDrawRound ? (
+        isDrawRound
+          ? (
           <p className={styles.title}>Draw. Try a new round!</p>
-        ) : (
+            )
+          : (
           <p className={styles.title}>
             {winner
               ? <>Winner is: <img src={winnerIcon} alt=""/></>
               : <>Current move <img src={cellIcon} alt=""/></>}
           </p>
-        )
+            )
       }
       {showRetryButton && <button className={styles.button} onClick={handleResetGame}>Retry</button>}
       <div className={styles.container}>

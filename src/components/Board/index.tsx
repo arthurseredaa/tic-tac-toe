@@ -19,6 +19,8 @@ interface Props {
 
 const winnerCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [2, 5, 8], [1, 4, 7], [0, 4, 8], [2, 4, 6]]
 
+const ALL_CELLS_CHECKED_BOARD_LENGTH = 9
+
 const calculateWinner = (boardData: BoardData, currentValue: PlayerSign): boolean => {
   const filteredCombos = boardData.filter(item => item.value === currentValue)
   const playerCombos = filteredCombos.map((item) => item.cellIndex)
@@ -32,30 +34,15 @@ const Board: FC<Props> = ({
 }) => {
   const [winner, setWinner] = useState<null | PlayerSign>(null)
   const [checkBoardData, setCheckBoardData] = useState(false)
-  const {
-    updateBoardData,
-    boardData,
-    resetBoard
-  } = useContext(BoardContext)
+  const [showRetryButton, setShowRetryButton] = useState(false)
+  const { updateBoardData, boardData, resetBoard } = useContext(BoardContext)
+  const isDrawRound = boardData.length === ALL_CELLS_CHECKED_BOARD_LENGTH && !winner
 
-  const onCellClicked = (e: SyntheticEvent<HTMLButtonElement>): void => {
-    const cellIndex = +(e?.currentTarget.dataset.order ?? 0)
-
-    if (updateBoardData) {
-      updateBoardData({
-        player: currentValue,
-        cellIndex
-      })
+  useEffect(() => {
+    if (isDrawRound || winner) {
+      setShowRetryButton(true)
     }
-
-    setCheckBoardData(true)
-  }
-
-  const handleResetGame = (): void => {
-    if (resetBoard) resetBoard()
-
-    setWinner(null)
-  }
+  }, [isDrawRound, winner])
 
   useEffect(() => {
     const checkGameWinner = (): void => {
@@ -75,17 +62,41 @@ const Board: FC<Props> = ({
     if (checkBoardData) checkGameWinner()
   }, [boardData, currentValue, winnerCombinations, calculateWinner, toggleMove, checkBoardData])
 
+  const onCellClicked = (e: SyntheticEvent<HTMLButtonElement>): void => {
+    const cellIndex = +(e?.currentTarget.dataset.order ?? 0)
+
+    if (updateBoardData) {
+      updateBoardData({ player: currentValue, cellIndex })
+    }
+
+    setCheckBoardData(true)
+  }
+
+  const handleResetGame = (): void => {
+    if (resetBoard) resetBoard()
+
+    setWinner(null)
+  }
+
   const cellIcon = currentValue === 'x' ? Cross : Circle
   const winnerIcon = winner === 'x' ? Cross : Circle
 
   return (
     <>
-      <p className={styles.title}>
-        {winner
-          ? <>Winner is: <img src={winnerIcon} alt=""/></>
-          : <>Current move <img src={cellIcon} alt=""/></>}
-      </p>
-      {winner && <button className={styles.button} onClick={handleResetGame}>Retry</button>}
+      {
+        isDrawRound
+          ? (
+          <p className={styles.title}>Draw. Try a new round!</p>
+            )
+          : (
+          <p className={styles.title}>
+            {winner
+              ? <>Winner is: <img src={winnerIcon} alt=""/></>
+              : <>Current move <img src={cellIcon} alt=""/></>}
+          </p>
+            )
+      }
+      {showRetryButton && <button className={styles.button} onClick={handleResetGame}>Retry</button>}
       <div className={styles.container}>
         {new Array(defaultSize * defaultSize).fill(null).map((_, index) => {
           const isItemChecked = boardData.some(item => item.cellIndex === index)

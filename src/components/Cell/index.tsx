@@ -1,6 +1,10 @@
-import { type FC, type SyntheticEvent, useEffect, useState } from 'react'
+import { type FC, type SyntheticEvent } from 'react'
+
+import Cross from '@assets/images/crossIcon.svg'
+import Circle from '@assets/images/circleIcon.svg'
 
 import styles from './cell.module.scss'
+
 import { type PlayerSign } from '@context/BoardContext'
 
 interface Props {
@@ -11,22 +15,24 @@ interface Props {
   winner: null | PlayerSign
 }
 
-const Cell: FC<Props> = ({ onCellClicked, index, isChecked, value, winner }) => {
-  const [cellValue, setCellValue] = useState<'' | 'x' | 'o'>('')
-
+const Cell: FC<Props> = ({
+  onCellClicked,
+  index,
+  isChecked,
+  value,
+  winner
+}) => {
   const handleClick = (e: SyntheticEvent<HTMLButtonElement>): void => {
     onCellClicked(e)
   }
 
-  useEffect(() => {
-    if (isChecked) setCellValue(value ?? '')
-  }, [isChecked])
+  const isCellDisabled = !!value || !!(winner && !value)
 
-  const isCellDisabled = !!cellValue || !!(winner && !cellValue)
+  const cellIcon = isChecked && (value === 'x' ? Cross : Circle)
 
   return (
     <button className={styles.button} data-order={index} disabled={isCellDisabled}
-            onClick={handleClick}>{cellValue}</button>
+            onClick={handleClick}>{cellIcon && <img src={cellIcon} alt=''/>}</button>
   )
 }
 

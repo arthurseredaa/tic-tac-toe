@@ -1,8 +1,8 @@
 import { type FC, type SyntheticEvent, useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
-import Cross from '@assets/images/crossIcon.png'
-import Circle from '@assets/images/circleIcon.png'
+import Cross from '@assets/images/crossIcon.svg'
+import Circle from '@assets/images/circleIcon.svg'
 
 import Cell from '@components/Cell'
 

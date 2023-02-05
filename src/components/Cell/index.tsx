@@ -1,7 +1,7 @@
 import { type FC, type SyntheticEvent } from 'react'
 
-import Cross from '@assets/images/crossIcon.png'
-import Circle from '@assets/images/circleIcon.png'
+import Cross from '@assets/images/crossIcon.svg'
+import Circle from '@assets/images/circleIcon.svg'
 
 import styles from './cell.module.scss'
 

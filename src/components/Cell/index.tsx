@@ -1,9 +1,10 @@
-import { type FC, type SyntheticEvent, useEffect, useState } from 'react'
+import { type FC, type SyntheticEvent } from 'react'
 
 import Cross from '@assets/images/crossIcon.png'
 import Circle from '@assets/images/circleIcon.png'
 
 import styles from './cell.module.scss'
+
 import { type PlayerSign } from '@context/BoardContext'
 
 interface Props {

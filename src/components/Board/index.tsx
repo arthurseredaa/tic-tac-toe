@@ -7,6 +7,7 @@ import Circle from '@assets/images/circleIcon.png'
 import Cell from '@components/Cell'
 
 import styles from './board.module.scss'
+
 import { BoardContext, type BoardData, type PlayerSign } from '@context/BoardContext'
 
 const defaultSize = 3
@@ -80,8 +81,9 @@ const Board: FC<Props> = ({
   return (
     <>
       <p className={styles.title}>
-        {winner ? <>Winner is: <img src={winnerIcon} alt=""/></> :
-          <>Current move <img src={cellIcon} alt=""/></>}
+        {winner
+          ? <>Winner is: <img src={winnerIcon} alt=""/></>
+          : <>Current move <img src={cellIcon} alt=""/></>}
       </p>
       {winner && <button className={styles.button} onClick={handleResetGame}>Retry</button>}
       <div className={styles.container}>

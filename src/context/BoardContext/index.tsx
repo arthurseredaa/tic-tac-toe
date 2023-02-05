@@ -1,35 +1,40 @@
 import { createContext, type FC, type ReactNode, useCallback, useMemo, useState } from 'react'
 
-interface Board {
-  x: number[]
-  o: number[]
+export type PlayerSign = 'x' | 'o'
+
+interface BoardMove {
+  cellIndex: number
+  value: PlayerSign
 }
 
-type UpdateBoardData = ({ player, cellIndex }: { player: 'x' | 'o', cellIndex: number }) => void
+export type BoardData = BoardMove[]
 
-interface BoardContext {
-  boardData: Board
+type UpdateBoardData = ({ player, cellIndex }: { player: PlayerSign, cellIndex: number }) => void
+
+interface IBoardContext {
+  boardData: BoardMove[]
   updateBoardData?: UpdateBoardData
+  resetBoard?: () => void
 }
 
-const defaultBoardData: Board = {
-  x: [],
-  o: []
-}
+const defaultBoardData: BoardData = []
 
-export const Context = createContext<BoardContext>({ boardData: defaultBoardData })
+export const BoardContext = createContext<IBoardContext>({ boardData: defaultBoardData })
 
 export const BoardContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [boardData, setBoardData] = useState<Board>(defaultBoardData)
+  const [boardData, setBoardData] = useState<BoardData>(defaultBoardData)
 
   const updateBoardData = useCallback<UpdateBoardData>(({ player, cellIndex }) => {
-    setBoardData((prevState) => ({ ...prevState, [player]: [...prevState[player], cellIndex] }))
+    setBoardData(prevState => ([...prevState, { cellIndex, value: player }]))
   }, [])
+
+  const resetBoard = (): void => { setBoardData(defaultBoardData) }
 
   const contextValue = useMemo(() => ({
     boardData,
-    updateBoardData
-  }), [boardData, updateBoardData])
+    updateBoardData,
+    resetBoard
+  }), [boardData, updateBoardData, resetBoard])
 
-  return <Context.Provider value={contextValue}>{children}</Context.Provider>
+  return <BoardContext.Provider value={contextValue}>{children}</BoardContext.Provider>
 }

@@ -1,8 +1,10 @@
-import { type FC, useEffect, useState } from 'react'
+import { type FC, type SyntheticEvent, useContext, useEffect, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 import Cell from '@components/Cell'
 
 import styles from './board.module.scss'
+import { BoardContext, type BoardData, type PlayerSign } from '@context/BoardContext'
 
 const defaultSize = 3
 
@@ -11,36 +13,39 @@ interface Props {
   toggleMove: () => void
 }
 
-interface BoardData {
-  x: number[]
-  o: number[]
-}
+const winnerCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [2, 5, 8], [1, 4, 7], [0, 4, 8], [2, 4, 6]]
 
-const winnerCombinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [3, 6, 9], [2, 5, 8], [1, 5, 9], [3, 5, 7]]
+const calculateWinner = (boardData: BoardData, currentValue: PlayerSign): boolean => {
+  const filteredCombos = boardData.filter(item => item.value === currentValue)
+  const playerCombos = filteredCombos.map((item) => item.cellIndex)
 
-const calculateWinner = (playerCombos: number[]): boolean => {
-  return winnerCombinations.some((winCombo) => {
-    return winCombo.every((item) => playerCombos.includes(item))
-  })
+  return winnerCombinations.some((winCombo) => winCombo.every((item) => playerCombos.includes(item)))
 }
 
 const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
-  const [boardData, setBoardData] = useState<BoardData>({ x: [], o: [] })
-  const [winner, setWinner] = useState<null | 'x' | 'o'>(null)
+  const [winner, setWinner] = useState<null | PlayerSign>(null)
   const [checkBoardData, setCheckBoardData] = useState(false)
+  const { updateBoardData, boardData, resetBoard } = useContext(BoardContext)
 
-  const onCellClicked = (cellIndex: number): void => {
-    setBoardData(prevState => ({
-      ...prevState,
-      [currentValue]: [...prevState[currentValue], cellIndex]
-    }))
+  const onCellClicked = (e: SyntheticEvent<HTMLButtonElement>): void => {
+    const cellIndex = +(e?.currentTarget.dataset.order ?? 0)
+
+    if (updateBoardData) {
+      updateBoardData({ player: currentValue, cellIndex })
+    }
 
     setCheckBoardData(true)
   }
 
+  const handleResetGame = (): void => {
+    if (resetBoard) resetBoard()
+
+    setWinner(null)
+  }
+
   useEffect(() => {
     const checkGameWinner = (): void => {
-      const isWinner = calculateWinner(boardData[currentValue])
+      const isWinner = calculateWinner(boardData, currentValue)
 
       if (isWinner) {
         setWinner(currentValue)
@@ -56,17 +61,19 @@ const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
     if (checkBoardData) checkGameWinner()
   }, [boardData, currentValue, winnerCombinations, calculateWinner, toggleMove, checkBoardData])
 
-  // TODO: remove index as key for Cell component and use normal id
   return (
     <>
-      <p className={styles.title}> {winner ? 'Winner is' : 'Current move'}: {winner}</p>
-      {winner && <button className={styles.button}>Retry</button>}
+      <p className={styles.title}> {winner ? 'Winner is' : 'Current move'}: {winner ?? currentValue}</p>
+      {winner && <button className={styles.button} onClick={handleResetGame}>Retry</button>}
       <div className={styles.container}>
-        {new Array(defaultSize * defaultSize).fill(null).map((_, index) => (
-          <Cell key={index} currentValue={currentValue} onCellClicked={() => {
-            onCellClicked(index + 1)
-          }}/>
-        ))}
+        {new Array(defaultSize * defaultSize).fill(null).map((_, index) => {
+          const isItemChecked = boardData.some(item => item.cellIndex === index)
+          const itemValue = boardData.find(item => item.cellIndex === index)?.value
+          const id = uuidv4()
+
+          return <Cell key={id} index={index} onCellClicked={onCellClicked}
+                       isChecked={isItemChecked} value={itemValue} winner={winner} />
+        })}
       </div>
     </>
   )

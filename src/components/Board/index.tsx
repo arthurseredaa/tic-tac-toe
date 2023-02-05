@@ -1,8 +1,8 @@
 import { type FC, type SyntheticEvent, useContext, useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
-import xIcon from '@assets/images/x-regular-24.png'
-import circleImage from '@assets/images/radio-circle-regular-24.png'
+import Cross from '@assets/images/crossIcon.png'
+import Circle from '@assets/images/circleIcon.png'
 
 import Cell from '@components/Cell'
 
@@ -74,13 +74,14 @@ const Board: FC<Props> = ({
     if (checkBoardData) checkGameWinner()
   }, [boardData, currentValue, winnerCombinations, calculateWinner, toggleMove, checkBoardData])
 
-  const sellIcon = currentValue === 'x' ? xIcon : circleImage
-  const winnerIcon = winner === 'x' ? xIcon : circleImage
+  const cellIcon = currentValue === 'x' ? Cross : Circle
+  const winnerIcon = winner === 'x' ? Cross : Circle
 
   return (
     <>
-      <p className={styles.title}> {winner ? 'Winner is' : 'Current move'}:
-        {winner ? <img src={winnerIcon} alt=""/> : <img src={sellIcon} alt=""/>}
+      <p className={styles.title}>
+        {winner ? <>Winner is: <img src={winnerIcon} alt=""/></> :
+          <>Current move <img src={cellIcon} alt=""/></>}
       </p>
       {winner && <button className={styles.button} onClick={handleResetGame}>Retry</button>}
       <div className={styles.container}>

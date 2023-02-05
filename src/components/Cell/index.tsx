@@ -1,7 +1,7 @@
 import { type FC, type SyntheticEvent, useEffect, useState } from 'react'
 
-import xIcon from '@assets/images/x-regular-24.png'
-import circleImage from '@assets/images/radio-circle-regular-24.png'
+import Cross from '@assets/images/crossIcon.png'
+import Circle from '@assets/images/circleIcon.png'
 
 import styles from './cell.module.scss'
 import { type PlayerSign } from '@context/BoardContext'
@@ -21,20 +21,17 @@ const Cell: FC<Props> = ({
   value,
   winner
 }) => {
-  const [cellValue, setCellValue] = useState<string>('')
   const handleClick = (e: SyntheticEvent<HTMLButtonElement>): void => {
     onCellClicked(e)
   }
 
-  useEffect(() => {
-    if (isChecked) setCellValue(value === 'x' ? xIcon : circleImage)
-  }, [isChecked])
+  const isCellDisabled = !!value || !!(winner && !value)
 
-  const isCellDisabled = !!cellValue || !!(winner && !cellValue)
+  const cellIcon = isChecked && (value === 'x' ? Cross : Circle)
 
   return (
     <button className={styles.button} data-order={index} disabled={isCellDisabled}
-            onClick={handleClick}><img src={cellValue} alt={cellValue}/></button>
+            onClick={handleClick}>{cellIcon && <img src={cellIcon} alt=''/>}</button>
   )
 }
 

@@ -1,13 +1,13 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 
-import Cell from "@components/Cell";
+import Cell from '@components/Cell';
 
-import styles from "./board.module.scss";
+import styles from './board.module.scss';
 
 const defaultSize = 3;
 
 type Props = {
-  currentValue: "x" | "o";
+  currentValue: 'x' | 'o';
   toggleMove: () => void;
 };
 
@@ -30,9 +30,9 @@ const calculateWinner = (playerCombos: number[]): boolean => {
   });
 };
 
-const Board: FC<Props> = ({ currentValue = "o", toggleMove }) => {
+const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
   const [boardData, setBoardData] = useState<BoardData>({ x: [], o: [] });
-  const [winner, setWinner] = useState<null | "x" | "o">(null);
+  const [winner, setWinner] = useState<null | 'x' | 'o'>(null);
   const [checkBoardData, setCheckBoardData] = useState(false);
 
   const onCellClicked = (cellIndex: number) => {
@@ -69,11 +69,12 @@ const Board: FC<Props> = ({ currentValue = "o", toggleMove }) => {
     checkBoardData,
   ]);
 
+  // TODO: Remove index as key prop and add normal id
   return (
     <>
       <p className={styles.title}>
-        {" "}
-        {winner ? "Winner is" : "Current move"}: {currentValue}
+        {' '}
+        {winner ? 'Winner is' : 'Current move'}: {currentValue}
       </p>
       {winner && <button className={styles.button}>Retry</button>}
       <div className={styles.container}>
@@ -81,6 +82,7 @@ const Board: FC<Props> = ({ currentValue = "o", toggleMove }) => {
           <Cell
             currentValue={currentValue}
             onCellClicked={() => onCellClicked(index + 1)}
+            key={index}
           />
         ))}
       </div>

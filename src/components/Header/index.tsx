@@ -1,6 +1,6 @@
-import icon from "@assets/icons/tic-tac-toe.svg";
+import icon from '@assets/icons/tic-tac-toe.svg';
 
-import styles from "./header.module.scss";
+import styles from './header.module.scss';
 
 const Header = () => {
   return (

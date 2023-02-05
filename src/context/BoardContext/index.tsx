@@ -5,7 +5,7 @@ import {
   useCallback,
   useMemo,
   useState,
-} from "react";
+} from 'react';
 
 type Board = {
   x: Array<number>;
@@ -16,7 +16,7 @@ type UpdateBoardData = ({
   player,
   cellIndex,
 }: {
-  player: "x" | "o";
+  player: 'x' | 'o';
   cellIndex: number;
 }) => void;
 

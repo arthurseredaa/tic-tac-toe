@@ -7,12 +7,12 @@ const App: FC = () => {
   const [currentValue, setCurrentValue] = useState<'x' | 'o'>('o')
 
   const toggleMove = (): void => {
-    setCurrentValue(prevState => prevState === 'o' ? 'x' : 'o')
+    setCurrentValue((prevState) => (prevState === 'o' ? 'x' : 'o'))
   }
 
   return (
     <>
-      <Header/>
+      <Header />
       <Board toggleMove={toggleMove} currentValue={currentValue} />
     </>
   )

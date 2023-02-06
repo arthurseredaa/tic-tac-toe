@@ -1,4 +1,10 @@
-import { type FC, type SyntheticEvent, useContext, useEffect, useState } from 'react'
+import {
+  type FC,
+  type SyntheticEvent,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import Cross from '@assets/images/crossIcon.svg'
@@ -8,7 +14,11 @@ import Cell from '@components/Cell'
 
 import styles from './board.module.scss'
 
-import { BoardContext, type BoardData, type PlayerSign } from '@context/BoardContext'
+import {
+  BoardContext,
+  type BoardData,
+  type PlayerSign,
+} from '@context/BoardContext'
 
 const defaultSize = 3
 
@@ -17,26 +27,38 @@ interface Props {
   toggleMove: () => void
 }
 
-const winnerCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [2, 5, 8], [1, 4, 7], [0, 4, 8], [2, 4, 6]]
+const winnerCombinations = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [2, 5, 8],
+  [1, 4, 7],
+  [0, 4, 8],
+  [2, 4, 6],
+]
 
 const ALL_CELLS_CHECKED_BOARD_LENGTH = 9
 
-const calculateWinner = (boardData: BoardData, currentValue: PlayerSign): boolean => {
-  const filteredCombos = boardData.filter(item => item.value === currentValue)
+const calculateWinner = (
+  boardData: BoardData,
+  currentValue: PlayerSign
+): boolean => {
+  const filteredCombos = boardData.filter((item) => item.value === currentValue)
   const playerCombos = filteredCombos.map((item) => item.cellIndex)
 
-  return winnerCombinations.some((winCombo) => winCombo.every((item) => playerCombos.includes(item)))
+  return winnerCombinations.some((winCombo) =>
+    winCombo.every((item) => playerCombos.includes(item))
+  )
 }
 
-const Board: FC<Props> = ({
-  currentValue = 'o',
-  toggleMove
-}) => {
+const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
   const [winner, setWinner] = useState<null | PlayerSign>(null)
   const [checkBoardData, setCheckBoardData] = useState(false)
   const [showRetryButton, setShowRetryButton] = useState(false)
   const { updateBoardData, boardData, resetBoard } = useContext(BoardContext)
-  const isDrawRound = boardData.length === ALL_CELLS_CHECKED_BOARD_LENGTH && !winner
+  const isDrawRound =
+    boardData.length === ALL_CELLS_CHECKED_BOARD_LENGTH && !winner
 
   useEffect(() => {
     if (isDrawRound || winner) {
@@ -60,7 +82,14 @@ const Board: FC<Props> = ({
     }
 
     if (checkBoardData) checkGameWinner()
-  }, [boardData, currentValue, winnerCombinations, calculateWinner, toggleMove, checkBoardData])
+  }, [
+    boardData,
+    currentValue,
+    winnerCombinations,
+    calculateWinner,
+    toggleMove,
+    checkBoardData,
+  ])
 
   const onCellClicked = (e: SyntheticEvent<HTMLButtonElement>): void => {
     const cellIndex = +(e?.currentTarget.dataset.order ?? 0)
@@ -83,27 +112,46 @@ const Board: FC<Props> = ({
 
   return (
     <>
-      {
-        isDrawRound
-          ? (
-          <p className={styles.title}>Draw. Try a new round!</p>
-            )
-          : (
-          <p className={styles.title}>
-            {winner
-              ? <>Winner is: <img src={winnerIcon} alt=""/></>
-              : <>Current move <img src={cellIcon} alt=""/></>}
-          </p>
-            )
-      }
-      {showRetryButton && <button className={styles.button} onClick={handleResetGame}>Retry</button>}
+      {isDrawRound ? (
+        <p className={styles.title}>Draw. Try a new round!</p>
+      ) : (
+        <p className={styles.title}>
+          {winner ? (
+            <>
+              Winner is: <img src={winnerIcon} alt='' />
+            </>
+          ) : (
+            <>
+              Current move <img src={cellIcon} alt='' />
+            </>
+          )}
+        </p>
+      )}
+      {showRetryButton && (
+        <button className={styles.button} onClick={handleResetGame}>
+          Retry
+        </button>
+      )}
       <div className={styles.container}>
         {new Array(defaultSize * defaultSize).fill(null).map((_, index) => {
-          const isItemChecked = boardData.some(item => item.cellIndex === index)
-          const itemValue = boardData.find(item => item.cellIndex === index)?.value
+          const isItemChecked = boardData.some(
+            (item) => item.cellIndex === index
+          )
+          const itemValue = boardData.find(
+            (item) => item.cellIndex === index
+          )?.value
           const id = uuidv4()
 
-          return <Cell key={id} index={index} onCellClicked={onCellClicked} isChecked={isItemChecked} value={itemValue} winner={winner}/>
+          return (
+            <Cell
+              key={id}
+              index={index}
+              onCellClicked={onCellClicked}
+              isChecked={isItemChecked}
+              value={itemValue}
+              winner={winner}
+            />
+          )
         })}
       </div>
     </>

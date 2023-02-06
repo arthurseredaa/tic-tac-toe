@@ -12,13 +12,17 @@
     "stylelint": "stylelint \"**/*.scss\"",
     "stylelint:fix": "stylelint \"**/*.scss\" --fix",
     "lint": "npm run eslint && npm run stylelint",
-    "lint:fix": "npm run eslint:fix && npm run stylelint:fix"
+    "lint:fix": "npm run eslint:fix && npm run stylelint:fix",
+    "prettier": "npx prettier --write .",
+    "add-files": "git add ."
   },
   "pre-commit": [
+    "prettier",
     "eslint:fix",
     "stylelint:fix",
     "eslint",
-    "stylelint"
+    "stylelint",
+    "add-files"
   ],
   "dependencies": {
     "pre-commit": "^1.2.2",
@@ -34,12 +38,15 @@
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-config-standard-with-typescript": "^34.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
     "postcss-scss": "^4.0.6",
+    "prettier": "^2.8.3",
     "sass": "^1.58.0",
     "stylelint": "^14.16.1",
     "stylelint-config-standard": "^29.0.0",

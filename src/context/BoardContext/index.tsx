@@ -1,4 +1,11 @@
-import { createContext, type FC, type ReactNode, useCallback, useMemo, useState } from 'react'
+import {
+  createContext,
+  type FC,
+  type ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react'
 
 export type PlayerSign = 'x' | 'o'
 
@@ -9,7 +16,13 @@ interface BoardMove {
 
 export type BoardData = BoardMove[]
 
-type UpdateBoardData = ({ player, cellIndex }: { player: PlayerSign, cellIndex: number }) => void
+type UpdateBoardData = ({
+  player,
+  cellIndex,
+}: {
+  player: PlayerSign
+  cellIndex: number
+}) => void
 
 interface IBoardContext {
   boardData: BoardMove[]
@@ -19,22 +32,38 @@ interface IBoardContext {
 
 const defaultBoardData: BoardData = []
 
-export const BoardContext = createContext<IBoardContext>({ boardData: defaultBoardData })
+export const BoardContext = createContext<IBoardContext>({
+  boardData: defaultBoardData,
+})
 
-export const BoardContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const BoardContextProvider: FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [boardData, setBoardData] = useState<BoardData>(defaultBoardData)
 
-  const updateBoardData = useCallback<UpdateBoardData>(({ player, cellIndex }) => {
-    setBoardData(prevState => ([...prevState, { cellIndex, value: player }]))
-  }, [])
+  const updateBoardData = useCallback<UpdateBoardData>(
+    ({ player, cellIndex }) => {
+      setBoardData((prevState) => [...prevState, { cellIndex, value: player }])
+    },
+    []
+  )
 
-  const resetBoard = (): void => { setBoardData(defaultBoardData) }
+  const resetBoard = (): void => {
+    setBoardData(defaultBoardData)
+  }
 
-  const contextValue = useMemo(() => ({
-    boardData,
-    updateBoardData,
-    resetBoard
-  }), [boardData, updateBoardData, resetBoard])
+  const contextValue = useMemo(
+    () => ({
+      boardData,
+      updateBoardData,
+      resetBoard,
+    }),
+    [boardData, updateBoardData, resetBoard]
+  )
 
-  return <BoardContext.Provider value={contextValue}>{children}</BoardContext.Provider>
+  return (
+    <BoardContext.Provider value={contextValue}>
+      {children}
+    </BoardContext.Provider>
+  )
 }

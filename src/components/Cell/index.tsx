@@ -20,7 +20,7 @@ const Cell: FC<Props> = ({
   index,
   isChecked,
   value,
-  winner
+  winner,
 }) => {
   const handleClick = (e: SyntheticEvent<HTMLButtonElement>): void => {
     onCellClicked(e)
@@ -31,8 +31,13 @@ const Cell: FC<Props> = ({
   const cellIcon = isChecked && (value === 'x' ? Cross : Circle)
 
   return (
-    <button className={styles.button} data-order={index} disabled={isCellDisabled}
-            onClick={handleClick}>{cellIcon && <img src={cellIcon} alt=''/>}</button>
+    <button
+      className={styles.button}
+      data-order={index}
+      disabled={isCellDisabled}
+      onClick={handleClick}>
+      {cellIcon && <img src={cellIcon} alt='' />}
+    </button>
   )
 }
 

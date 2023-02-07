@@ -1,13 +1,13 @@
 @import "../../styles/index";
 
-.button {
+.button, .button_winner {
   border: 1px solid $white;
   height: 100px;
   width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: transparent;
+  background-color: $accent;
   color: $white;
   transition: 0.1s all linear;
 
@@ -19,4 +19,8 @@
     background-color: $accent;
     border-color: $accent;
   }
+}
+
+.button_winner {
+  background-color: red;
 }

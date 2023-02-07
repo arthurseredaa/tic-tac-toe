@@ -13,6 +13,7 @@ interface Props {
   isChecked: boolean
   value?: PlayerSign
   winner: null | PlayerSign
+  stylesForWinner: boolean
 }
 
 const Cell: FC<Props> = ({
@@ -21,6 +22,7 @@ const Cell: FC<Props> = ({
   isChecked,
   value,
   winner,
+  stylesForWinner
 }) => {
   const handleClick = (e: SyntheticEvent<HTMLButtonElement>): void => {
     onCellClicked(e)
@@ -32,7 +34,7 @@ const Cell: FC<Props> = ({
 
   return (
     <button
-      className={styles.button}
+      className={stylesForWinner ? styles.button_winner : styles.button}
       data-order={index}
       disabled={isCellDisabled}
       onClick={handleClick}>

@@ -63,6 +63,8 @@ const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
   useEffect(() => {
     if (isDrawRound || winner) {
       setShowRetryButton(true)
+    } else if (boardData.length === 0) {
+      setShowRetryButton(false)
     }
   }, [isDrawRound, winner])
 

@@ -8,7 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $accent;
+  background-color: transparent;
   color: $white;
   transition: 0.1s all linear;
 
@@ -23,5 +23,5 @@
 }
 
 .button_winner {
-  background-color: red;
+  background-color: $accent;
 }

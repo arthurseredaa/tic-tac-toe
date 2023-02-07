@@ -22,7 +22,7 @@ const Cell: FC<Props> = ({
   isChecked,
   value,
   winner,
-  stylesForWinner
+  stylesForWinner,
 }) => {
   const handleClick = (e: SyntheticEvent<HTMLButtonElement>): void => {
     onCellClicked(e)

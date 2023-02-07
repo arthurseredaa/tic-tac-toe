@@ -1,4 +1,10 @@
-import { type FC, type SyntheticEvent, useContext, useEffect, useState } from 'react'
+import {
+  type FC,
+  type SyntheticEvent,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import Cross from '@assets/images/crossIcon.svg'
@@ -8,7 +14,11 @@ import Cell from '@components/Cell'
 
 import styles from './board.module.scss'
 
-import { BoardContext, type BoardData, type PlayerSign } from '@context/BoardContext'
+import {
+  BoardContext,
+  type BoardData,
+  type PlayerSign,
+} from '@context/BoardContext'
 
 const defaultSize = 3
 
@@ -30,39 +40,39 @@ const winnerCombinations = [
 
 const ALL_CELLS_CHECKED_BOARD_LENGTH = 9
 
-const findWinnerCombination = (boardData: BoardData, currentValue: PlayerSign): number[] => {
+const findWinnerCombination = (
+  boardData: BoardData,
+  currentValue: PlayerSign
+): number[] => {
   const filteredCombos = boardData.filter((item) => item.value === currentValue)
   return filteredCombos.map((item) => item.cellIndex)
 }
 
-const filteredWinnerCombinations = (array: number[]):number[] => {
-  const newArray = winnerCombinations.map(itemArr => array.filter(item => itemArr.includes(item)))
-  return newArray.filter(item => item.length === 3).flat()
+const filteredWinnerCombinations = (array: number[]): number[] => {
+  const newArray = winnerCombinations.map((itemArr) =>
+    array.filter((item) => itemArr.includes(item))
+  )
+  return newArray.filter((item) => item.length === 3).flat()
 }
 
 const calculateWinner = (
   boardData: BoardData,
-  currentValue: PlayerSign,
+  currentValue: PlayerSign
 ): boolean => {
   const winnerCombination = findWinnerCombination(boardData, currentValue)
   return winnerCombinations.some((winCombo) =>
-    winCombo.every((item) => winnerCombination.includes(item)),
+    winCombo.every((item) => winnerCombination.includes(item))
   )
 }
 
-const Board: FC<Props> = ({
-  currentValue = 'o',
-  toggleMove,
-}) => {
+const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
   const [winner, setWinner] = useState<null | PlayerSign>(null)
-  const [winPlayerCombination, setWinPlayerCombination] = useState<number[] | null>(null)
+  const [winPlayerCombination, setWinPlayerCombination] = useState<
+    number[] | null
+  >(null)
   const [checkBoardData, setCheckBoardData] = useState(false)
   const [showRetryButton, setShowRetryButton] = useState(false)
-  const {
-    updateBoardData,
-    boardData,
-    resetBoard,
-  } = useContext(BoardContext)
+  const { updateBoardData, boardData, resetBoard } = useContext(BoardContext)
   const isDrawRound =
     boardData.length === ALL_CELLS_CHECKED_BOARD_LENGTH && !winner
   useEffect(() => {
@@ -73,7 +83,9 @@ const Board: FC<Props> = ({
   useEffect(() => {
     const checkGameWinner = (): void => {
       const isWinner = calculateWinner(boardData, currentValue)
-      const winnerCombination = filteredWinnerCombinations(findWinnerCombination(boardData, currentValue))
+      const winnerCombination = filteredWinnerCombinations(
+        findWinnerCombination(boardData, currentValue)
+      )
       if (isWinner) {
         setWinner(currentValue)
         setCheckBoardData(false)
@@ -143,10 +155,10 @@ const Board: FC<Props> = ({
       <div className={styles.container}>
         {new Array(defaultSize * defaultSize).fill(null).map((_, index) => {
           const isItemChecked = boardData.some(
-            (item) => item.cellIndex === index,
+            (item) => item.cellIndex === index
           )
           const itemValue = boardData.find(
-            (item) => item.cellIndex === index,
+            (item) => item.cellIndex === index
           )?.value
           const id = uuidv4()
 

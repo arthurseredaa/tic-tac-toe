@@ -43,17 +43,25 @@ const ALL_CELLS_CHECKED_BOARD_LENGTH = 9
 const calculateWinner = (
   boardData: BoardData,
   currentValue: PlayerSign
-): boolean => {
+): { isPlayerWin: boolean; winnerCombo?: number[] } => {
   const filteredCombos = boardData.filter((item) => item.value === currentValue)
   const playerCombos = filteredCombos.map((item) => item.cellIndex)
 
-  return winnerCombinations.some((winCombo) =>
-    winCombo.every((item) => playerCombos.includes(item))
+  const winnerCombo = winnerCombinations.find((item) =>
+    item.every((item) => playerCombos.includes(item))
   )
+
+  const isPlayerWin = !!winnerCombo && winnerCombo.length === 3
+
+  return {
+    isPlayerWin,
+    winnerCombo,
+  }
 }
 
 const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
   const [winner, setWinner] = useState<null | PlayerSign>(null)
+  const [winnerCombo, setWinnerCombo] = useState<number[]>([])
   const [checkBoardData, setCheckBoardData] = useState(false)
   const [showRetryButton, setShowRetryButton] = useState(false)
   const { updateBoardData, boardData, resetBoard } = useContext(BoardContext)
@@ -72,10 +80,14 @@ const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
 
   useEffect(() => {
     const checkGameWinner = (): void => {
-      const isWinner = calculateWinner(boardData, currentValue)
+      const { isPlayerWin, winnerCombo } = calculateWinner(
+        boardData,
+        currentValue
+      )
 
-      if (isWinner) {
+      if (isPlayerWin && winnerCombo) {
         setWinner(currentValue)
+        setWinnerCombo(winnerCombo)
         setCheckBoardData(false)
 
         return
@@ -108,6 +120,7 @@ const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
   const handleResetGame = (): void => {
     if (resetBoard) resetBoard()
 
+    setWinnerCombo([])
     setWinner(null)
   }
 
@@ -154,6 +167,7 @@ const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
               isChecked={isItemChecked}
               value={itemValue}
               winner={winner}
+              isHighlighted={winnerCombo.includes(index)}
             />
           )
         })}

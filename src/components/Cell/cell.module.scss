@@ -1,6 +1,6 @@
 @import "../../styles/index";
 
-.button {
+%button {
   border: 1px solid $white;
   height: 100px;
   width: 100px;
@@ -19,4 +19,15 @@
     background-color: $accent;
     border-color: $accent;
   }
+}
+
+.button {
+  @extend %button;
+}
+
+.highlighted {
+  @extend %button;
+
+  background-color: $accent;
+  border-color: $accent;
 }

@@ -1,6 +1,7 @@
 @import "../../styles/index";
 
-.button {
+.button,
+.button_winner {
   border: 1px solid $white;
   height: 100px;
   width: 100px;
@@ -10,6 +11,10 @@
   background-color: transparent;
   color: $white;
   transition: 0.1s all linear;
+
+  &_winner {
+    background-color: $accent;
+  }
 
   &:disabled {
     border-color: $accent;

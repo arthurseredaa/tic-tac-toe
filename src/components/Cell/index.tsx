@@ -13,7 +13,7 @@ interface Props {
   isChecked: boolean
   value?: PlayerSign
   winner: null | PlayerSign
-  isPartOfWinCombo: boolean | undefined
+  isPartOfWinCombo?: boolean
 }
 
 const Cell: FC<Props> = ({

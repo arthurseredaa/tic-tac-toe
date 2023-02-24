@@ -43,16 +43,16 @@ const ALL_CELLS_CHECKED_BOARD_LENGTH = 9
 const calculateWinner = (
   boardData: BoardData,
   currentValue: PlayerSign
-): [boolean, number[] | undefined] => {
+): {isWinner: boolean, highlightedCells?: number[]} => {
   const filteredCombos = boardData.filter((item) => item.value === currentValue)
   const playerCombos = filteredCombos.map((item) => item.cellIndex)
-  const highlightedCell = winnerCombinations.find((item) =>
+  const highlightedCells = winnerCombinations.find((item) =>
     item.every((cell) => playerCombos.includes(cell))
   )
   const isWinner = winnerCombinations.some((winCombo) =>
     winCombo.every((item) => playerCombos.includes(item))
   )
-  return [isWinner, highlightedCell]
+  return {isWinner, highlightedCells}
 }
 
 const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
@@ -62,7 +62,7 @@ const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
   const { updateBoardData, boardData, resetBoard } = useContext(BoardContext)
   const isDrawRound =
     boardData.length === ALL_CELLS_CHECKED_BOARD_LENGTH && !winner
-  const [isWinner, highlightedCell] = calculateWinner(boardData, currentValue)
+  const {isWinner, highlightedCells} = calculateWinner(boardData, currentValue)
   useEffect(() => {
     const isNewRound = boardData.length === 0
 
@@ -147,7 +147,7 @@ const Board: FC<Props> = ({ currentValue = 'o', toggleMove }) => {
           )?.value
           const id = uuidv4()
 
-          const isPartOfWinCombo = highlightedCell?.includes(index)
+          const isPartOfWinCombo = highlightedCells?.includes(index)
 
           return (
             <Cell
